@@ -1,0 +1,65 @@
+{
+  "version": "0.2.3",
+  "capturedAt": "2026-09-24T15:36:52.124Z",
+  "source": "Real Electron application using desktop/test/electron-fixture.cjs",
+  "demoContent": true,
+  "modelCatalog": "Local acceptance fixture; not a live account or availability claim",
+  "paidCalls": 0,
+  "userData": "New isolated temporary profile; removed after capture",
+  "captures": [
+    {
+      "file": "docs/assets/screenshots/workbench.png",
+      "width": 1800,
+      "height": 1060,
+      "bytes": 174160,
+      "sha256": "6b800a232a22d310b38f7d5b676b9ac47aafd5a471654eabb5ba5b1a60010f97",
+      "crop": false,
+      "resized": false
+    },
+    {
+      "file": "docs/assets/screenshots/research.png",
+      "width": 1800,
+      "height": 1060,
+      "bytes": 196314,
+      "sha256": "addce9e4ddb5f678e83e71fec7f89baf7521d8c74d31ceb78c19d796a16b5848",
+      "crop": false,
+      "resized": false
+    },
+    {
+      "file": "docs/assets/screenshots/research-agents.png",
+      "width": 824,
+      "height": 1002,
+      "bytes": 79437,
+      "sha256": "29ac9748d18c1b25745c6305be584a33e4f8c36a20dfe44345ac37f53dba8066",
+      "crop": true,
+      "resized": false
+    },
+    {
+      "file": "docs/assets/screenshots/conversation-dark.png",
+      "width": 1440,
+      "height": 960,
+      "bytes": 105936,
+      "sha256": "f5ed22af0a6c866ba66503ef21bccede9fcb3bc9b92da7cbd467931ee67b65ff",
+      "crop": false,
+      "resized": false
+    },
+    {
+      "file": "docs/assets/screenshots/image-settings.png",
+      "width": 649,
+      "height": 440,
+      "bytes": 25783,
+      "sha256": "9c9d677216d0407b328d28215db7fc83496027416ed80b5f14325ead0a0c4393",
+      "crop": true,
+      "resized": false
+    },
+    {
+      "file": "docs/assets/screenshots/video-settings.png",
+      "width": 649,
+      "height": 377,
+      "bytes": 21875,
+      "sha256": "2775a77c6a2d532440d1417303bf1ebd42774fe22c49dcf4563b77c319880bfa",
+      "crop": true,
+      "resized": false
+    }
+  ]
+}

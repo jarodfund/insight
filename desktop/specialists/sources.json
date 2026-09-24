@@ -1,0 +1,22 @@
+{
+  "sources": [
+    { "id": "ppt-master", "repository": "hugohe3/ppt-master", "revision": "7c4543b2bfa9bc18ab3d17cb4c7926eb7ae977fe", "directories": ["skills", "docs"], "license": "MIT" },
+    { "id": "codex-ppt", "repository": "ningzimu/codex-ppt-skill", "revision": "32221ef8654c87505c846c9a48bb5dbe2a744a67", "directories": ["skills", "docs"], "license": "MIT" },
+    { "id": "openresearch", "repository": "alphaXiv/OpenResearch", "revision": "866c507ba3d10064bff2cede33c39e598ca9aa9d", "directories": ["agent-skills", "docs"], "license": "MIT" },
+    { "id": "feynman", "repository": "advaitpaliwal/feynman", "revision": "dfdcb7cf2c73183cff7b10aa8ea8ce370c8b152c", "directories": ["skills", "prompts", "extensions", "src"], "license": "MIT" },
+    { "id": "academic", "repository": "Imbad0202/academic-research-skills", "revision": "3c546bc08c56f79e0068f1ea4f0acedf5bf69b5e", "directories": ["skills", "pi", "shared", "academic-paper", "academic-paper-reviewer", "academic-pipeline", "deep-research", "scripts", "agents", "commands", ".claude", "docs", "tools"], "license": "CC-BY-NC-4.0" },
+    { "id": "paper-qa", "repository": "Future-House/paper-qa", "revision": "57e89f7223b0960d5ee5ea048c69e3c47e088572", "directories": ["src", "docs"], "license": "Apache-2.0" },
+    { "id": "agent-reach", "repository": "Panniantong/Agent-Reach", "revision": "a19a171fa980a0785849596492e0af4db800c82f", "directories": ["agent_reach", "docs", "config"], "license": "MIT" },
+    { "id": "yt-dlp", "repository": "yt-dlp/yt-dlp", "revision": "3a08beaf031ab68f966401ead017ac81fe8486cf", "directories": ["supportedsites", "yt_dlp"], "license": "Unlicense" },
+    { "id": "book-to-skill", "repository": "virgiliojr94/book-to-skill", "revision": "526f362552562d88c1a8bbf8012d2cee93f831d5", "directories": ["scripts", "book_to_skill", "tools", "docs"], "license": "MIT" },
+    { "id": "grill-me", "repository": "mattpocock/skills", "revision": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7", "directories": ["skills/productivity/grill-me", "skills/productivity/grilling"], "license": "MIT" },
+    { "id": "easel", "repository": "ZJU-REAL/Easel", "revision": "f4a62bf6a496ced8d4e509c5ea3a4999c7759fa3", "directories": ["skills", "docs", "profiles", "easel"], "license": "Apache-2.0" },
+    { "id": "hyperframes", "repository": "heygen-com/hyperframes", "revision": "952e9228b5cdf4387ecb4b6f220ef8e5d9143a73", "directories": ["skills"], "license": "Apache-2.0" }
+  ],
+  "media": { "ytDlp": "2026.8.19", "mcporter": "0.7.3" },
+  "openresearch": {
+    "version": "0.2.4",
+    "url": "https://github.com/alphaXiv/OpenResearch/releases/download/v0.2.4/openresearch-cli-x86_64-pc-windows-msvc.zip",
+    "sha256": "61a83b8ea3d8ebbdcd9d497ff655f2294daccf9699386b59b082bc102943e9f1"
+  }
+}
