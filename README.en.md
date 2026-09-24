@@ -26,7 +26,7 @@
 
 Jarod-Pi brings Pi's agent engine, model access and specialist skills into a Chinese-language desktop interface. Select your materials, describe your goal, and let the agent read files, use tools, delegate work and save results to your workspace. Start with a question, then keep researching, writing, presenting and creating around the same materials.
 
-> **Release status:** The first GitHub publication is being prepared in stages: the illustrated introduction and documentation come first; product source changes and public downloads are not published yet. Windows 0.2.3 has passed local runtime validation; 0.2.4 has been repackaged and is being validated. Linux and macOS are candidate packages awaiting native-machine testing. You need your own JarodFund API key; model calls and some external services may incur charges. See [downloads and platform status](docs/DOWNLOADS.md).
+> **Release status:** Use **0.2.4**, not 0.2.3, which still points to the retired resource server. Windows 0.2.4 has passed local launch, relocation and session-restoration checks; the missing GitHub agent resources are being published. Client ZIPs and the complete product source changes are not published yet. Linux and macOS are candidates awaiting native-machine testing. You need your own JarodFund API key; model calls and some external services may incur charges. See [downloads and platform status](docs/DOWNLOADS.md).
 
 <a id="capabilities"></a>
 
