@@ -1,7 +1,7 @@
 {
   "sources": [
     { "id": "ppt-master", "repository": "hugohe3/ppt-master", "revision": "7c4543b2bfa9bc18ab3d17cb4c7926eb7ae977fe", "directories": ["skills", "docs"], "license": "MIT" },
-    { "id": "codex-ppt", "repository": "ningzimu/codex-ppt-skill", "revision": "32221ef8654c87505c846c9a48bb5dbe2a744a67", "directories": ["skills", "docs"], "license": "MIT" },
+    { "id": "codex-ppt", "repository": "jarodfund/codex-ppt-skill", "revision": "a8841c6bc34349843310757d24540c27b228c102", "directories": ["skills", "docs"], "license": "MIT" },
     { "id": "openresearch", "repository": "alphaXiv/OpenResearch", "revision": "866c507ba3d10064bff2cede33c39e598ca9aa9d", "directories": ["agent-skills", "docs"], "license": "MIT" },
     { "id": "feynman", "repository": "advaitpaliwal/feynman", "revision": "dfdcb7cf2c73183cff7b10aa8ea8ce370c8b152c", "directories": ["skills", "prompts", "extensions", "src"], "license": "MIT" },
     { "id": "academic", "repository": "Imbad0202/academic-research-skills", "revision": "3c546bc08c56f79e0068f1ea4f0acedf5bf69b5e", "directories": ["skills", "pi", "shared", "academic-paper", "academic-paper-reviewer", "academic-pipeline", "deep-research", "scripts", "agents", "commands", ".claude", "docs", "tools"], "license": "CC-BY-NC-4.0" },

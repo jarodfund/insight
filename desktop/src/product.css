@@ -1,0 +1,6 @@
+.product-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 22px}
+#productSettings p{font-size:13px;line-height:1.7;color:inherit;opacity:.8}
+#productSettings small{font-size:12px;font-weight:400}
+#productSettings code{display:block;margin-top:10px;overflow-wrap:anywhere;font-size:12px}
+.resource-progress{font-size:12px;line-height:1.5;margin:0 0 8px}
+#moreSessions{margin:10px 0;width:100%}

@@ -1,0 +1,15 @@
+{
+  "name": "jarod-pi",
+  "version": "0.2.5",
+  "private": true,
+  "author": "学术派",
+  "description": "学术派 Jarod-Pi — 科研与创作桌面工作台",
+  "main": "src/main.cjs",
+  "dependencies": {
+    "dompurify": "3.4.15",
+    "electron-updater": "6.8.9",
+    "marked": "18.0.13",
+    "undici": "7.29.1",
+    "yauzl": "3.4.0"
+  }
+}

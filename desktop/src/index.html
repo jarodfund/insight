@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f2efe8" />
+    <title>学术派</title>
+    <link rel="icon" href="./icons/xueshupai.png" type="image/png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./product.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand" aria-label="学术派">
+          <span class="brand-symbol brand-mark" aria-hidden="true"></span>
+          <span>学术派</span>
+        </div>
+        <div class="topbar-actions"><div class="topbar-note"><span class="signal-dot"></span><span id="connectionLabel">正在连接学术派</span></div><button id="agentsToggle" class="agents-toggle" aria-controls="agentsPanel" aria-expanded="true">智能体 <span>◧</span></button></div>
+      </header>
+
+      <div class="workspace">
+        <aside class="sidebar" id="sidebar" aria-label="工作区与对话">
+          <button class="button button-primary new-session" id="newSessionButton"><span class="plus">+</span> 新对话</button>
+          <button class="button new-window" id="newWindowButton" title="新窗口使用独立会话，可同时运行任务">在新窗口中开始</button>
+
+          <div class="sidebar-content">
+            <div class="side-heading"><span>工作区</span><button class="icon-button" id="addWorkspaceButton" title="添加工作区" aria-label="添加工作区">+</button></div>
+            <nav id="workspaceList" class="workspace-list" aria-label="工作区列表"></nav>
+            <div class="side-heading recent-heading"><span>会话</span><span id="sessionCount" class="side-count">0</span></div>
+            <div id="sessionFilters" class="session-filters" role="group" aria-label="会话范围">
+              <button type="button" data-archived="false" aria-pressed="true">全部会话</button>
+              <button type="button" data-archived="true" aria-pressed="false">已归档</button>
+            </div>
+            <input id="sessionSearch" class="session-search" type="search" placeholder="搜索会话或工作区" aria-label="搜索所有工作区的会话" autocomplete="off" />
+            <nav id="sessionList" class="session-list" aria-label="全部会话"></nav>
+            <button type="button" id="moreSessions" class="button button-outline hidden">显示更多会话</button>
+            <p class="history-empty" id="historyEmpty" role="status">正在读取对话…</p>
+          </div>
+
+          <div class="sidebar-footer">
+            <p id="resourceProgress" class="resource-progress hidden" role="status"></p>
+            <div class="connection-card">
+              <span class="connection-mark" id="connectionMark"></span>
+              <span class="connection-copy"><strong id="providerName">JarodFund</strong><small id="connectionDetail" role="status">等待连接</small></span>
+              <button type="button" id="reconnectButton" class="reconnect-button" disabled>恢复连接</button>
+            </div>
+            <button class="settings-link" id="settingsButton"><span class="gear">⚙</span> 设置</button>
+          </div>
+        </aside>
+
+        <main class="main-panel">
+          <div class="main-toolbar">
+            <div class="crumbs"><span class="crumb-square"></span><span id="toolbarWorkspace">工作区</span><span class="slash">/</span><span id="toolbarMode">工作空间</span></div>
+            <div class="toolbar-controls">
+              <label class="select-wrap permission-select" title="权限管理在工具执行前审批，不是 Windows 系统沙箱；批准脚本或扩展也会授权其内部操作。">
+                <span class="control-label">权限管理</span>
+                <select id="permissionSelect" aria-label="权限管理" aria-describedby="permissionHint"></select>
+              </label>
+              <label class="select-wrap" title="选择模型">
+                <span class="control-label">对话模型</span>
+                <select id="modelSelect" aria-label="模型"></select>
+              </label>
+              <button type="button" id="refreshChatModels" class="icon-button" title="刷新 JarodFund 对话模型" aria-label="刷新对话模型">↻</button>
+              <label class="select-wrap thinking-select" title="选择推理强度">
+                <span class="control-label">推理强度</span>
+                <select id="thinkingSelect" aria-label="推理强度">
+                  <option value="off">OFF</option>
+                  <option value="minimal">MINIMAL</option>
+                  <option value="low">LOW</option>
+                  <option value="medium">MEDIUM</option>
+                  <option value="high">HIGH</option>
+                  <option value="xhigh">XHIGH</option>
+                  <option value="max">MAX</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <p id="permissionHint" class="permission-hint"></p>
+
+          <section class="welcome" id="welcomePanel">
+            <div class="brand-symbol hero-graphic" aria-hidden="true"></div>
+            <div class="welcome-copy">
+              <p class="eyebrow">想法，从这里开始</p>
+              <h1>学术派</h1>
+              <p class="welcome-text">从一个问题，到下一份成果。</p>
+              <div class="quick-actions">
+                <button class="quick-action" data-prompt="先帮我了解一下这个项目的结构，并告诉我从哪里开始。"><span class="quick-number">01</span> 了解这个项目 <span>↗</span></button>
+                <button class="quick-action" data-prompt="检查当前项目有没有明显的问题，并给我一份简短的改进建议。"><span class="quick-number">02</span> 做一次健康检查 <span>↗</span></button>
+              </div>
+            </div>
+          </section>
+
+          <section class="chat hidden" id="chatPanel" tabindex="0" aria-label="会话消息">
+            <div class="messages" id="messages" aria-live="polite"></div>
+            <div class="typing-row hidden" id="typingRow"><span class="typing-bars"><i></i><i></i><i></i></span><span id="typingText">学术派正在整理思路…</span></div>
+          </section>
+
+          <div class="composer-area">
+            <button type="button" id="followOutputButton" class="button follow-output hidden">回到最新消息</button>
+            <div class="composer-notices">
+              <section id="permissionRequests" class="permission-requests hidden" aria-label="等待批准的操作" aria-live="polite"></section>
+              <section id="messageQueue" class="message-queue hidden" aria-label="待处理消息" aria-live="polite"><div class="queue-heading"><span>待处理消息</span><button type="button" id="takeBackQueue" class="button button-outline">取回待发送</button></div><div id="messageQueueItems"></div></section>
+            </div>
+            <div class="task-status hidden" id="taskStatus" role="status"><span id="taskStatusLabel">进行中</span><time id="taskElapsed">00:00</time></div>
+            <div class="composer" id="composer">
+              <div id="commandMenu" class="command-menu hidden" role="listbox" aria-label="斜杠命令"></div>
+              <div class="composer-topline"><span class="composer-dot"></span><span id="composerAgent">和学术派说点什么</span><button id="clearAgent" class="clear-agent hidden" title="切回学术派助手" aria-label="切回学术派助手">×</button><span class="composer-hint">Shift + Enter 换行</span></div>
+              <textarea id="promptInput" rows="2" aria-label="消息" aria-autocomplete="list" aria-controls="commandMenu" aria-expanded="false" placeholder="例如：帮我整理这份材料，提炼值得讨论的问题……"></textarea>
+              <div id="attachments" class="attachments hidden" aria-label="待发送文件"></div>
+              <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden />
+              <div class="composer-bottomline">
+                <button type="button" class="attach-button" id="attachButton" title="多选任意文件，仅添加本地路径">+ 上传</button>
+                <span class="composer-context">仅引用本地路径 · 支持多选、拖入</span>
+                <select id="followUpMode" class="follow-up-mode hidden" aria-label="追加消息方式" title="补充在本轮工具调用结束后加入；完成后处理会等待当前任务完成。"><option value="steer">补充当前任务</option><option value="followUp">完成后处理</option></select>
+                <button class="send-button" id="sendButton"><span>发送</span><b aria-hidden="true">↑</b></button>
+                <button class="stop-button hidden" id="stopButton">停止</button>
+              </div>
+            </div>
+          </div>
+        </main>
+        <button type="button" id="agentsBackdrop" class="agents-backdrop" aria-label="收起智能体面板" tabindex="-1" hidden></button>
+        <aside class="agents-panel" id="agentsPanel" aria-label="专用智能体">
+          <div class="agents-heading"><div><p class="eyebrow">学术派 / 智能体</p><h2>专用智能体</h2></div><button id="agentsClose" class="icon-button" aria-label="收起智能体">×</button></div>
+          <p class="agents-intro">让专长就位。选一位助手，在当前对话里继续。</p>
+          <div class="agents-search"><label for="agentSearch">查找智能体</label><input id="agentSearch" type="search" placeholder="搜索名称、用途或分类" autocomplete="off" /></div>
+          <p id="agentSearchStatus" class="agent-search-status" role="status"></p>
+          <div class="agents-list" id="agentsList"></div>
+          <div id="agentsEmpty" class="agents-empty hidden"><p>没有找到匹配的智能体</p><button type="button" id="clearAgentSearch" class="button button-outline">清空搜索</button></div>
+          <div class="agents-footer"><span class="agents-footer-mark" aria-hidden="true"></span><span>你的材料，你的工作区。<br /><small>点击选择即用，也可以在“我的智能体”中添加自己的技能。</small></span></div>
+        </aside>
+      </div>
+    </div>
+
+    <dialog class="settings-dialog" id="settingsDialog">
+      <form method="dialog" id="settingsForm">
+        <div class="dialog-head"><div><p class="eyebrow">学术派 / 设置</p><h2>设置</h2></div></div>
+        <nav class="settings-nav" aria-label="设置分区"><a href="#accountSettings">账户</a><a href="#chatSettings">对话</a><a href="#imageSettings">图片</a><a href="#videoSettings">视频</a><a href="#productSettings">应用与更新</a><button class="close-button" value="cancel" aria-label="关闭设置">×</button></nav>
+        <section class="settings-section" id="accountSettings" aria-labelledby="accountHeading">
+        <h3 id="accountHeading">账户连接</h3>
+        <div class="key-status"><span class="key-shape" aria-hidden="true">◆</span><span><strong>JarodFund</strong><small id="apiStatusText">尚未连接</small></span><span class="status-pill" id="apiStatusPill">未连接</span></div>
+        <label class="field" for="apiKeyInput"><span>JarodFund API Key</span><input id="apiKeyInput" type="password" autocomplete="off" spellcheck="false" placeholder="输入你的 API Key" /></label>
+        <div class="key-options"><label class="key-reveal"><input id="rememberKey" type="checkbox" checked /> 记住 Key</label><label class="key-reveal"><input id="showKey" type="checkbox" /> 显示 Key</label></div>
+        <div class="key-actions"><button type="button" class="button button-outline logout-key hidden" id="logoutKeyButton">退出当前 Key</button><button type="button" class="button button-outline" id="connectKeyButton">验证并连接</button></div>
+        <p id="keyFeedback" class="key-feedback" role="status"></p>
+        </section>
+        <section class="settings-section" id="chatSettings" aria-labelledby="chatHeading">
+        <h3 id="chatHeading">对话与工作区</h3>
+        <div class="dialog-grid">
+          <label class="field"><span>提供商</span><input id="providerInput" value="jarodfund" autocomplete="off" /></label>
+          <label class="field"><span>默认模型</span><input id="modelInput" value="gpt-5.6-sol" list="chatModelOptions" autocomplete="off" /><datalist id="chatModelOptions"></datalist></label>
+        </div>
+        <button type="button" class="button button-outline" id="refreshChatModelsSettings">刷新对话模型</button>
+        <p id="chatModelHint" role="status">模型列表每次启动自动同步一次，也可手动刷新，无需重新输入 Key。</p>
+        <div class="field"><span>工作区目录</span><div class="directory-field"><input id="cwdInput" aria-label="工作区目录" value="" /><button type="button" class="button button-outline" id="dialogChooseDirectory">选择目录</button></div></div>
+        </section>
+        <section class="settings-section" id="imageSettings" aria-labelledby="imageHeading">
+        <h3 id="imageHeading">图片生成</h3>
+        <div class="field"><span>会话生图模型</span><div class="directory-field"><select id="imageModelSelect" aria-label="生图模型"><option value="gpt-image-2">gpt-image-2</option></select><button type="button" class="button button-outline" id="refreshImageModels">刷新</button></div><small id="imageModelHint">使用当前 JarodFund Key；在对话中直接描述想生成或修改的图片。</small></div>
+        <fieldset id="imageOptions" class="image-options" aria-label="生图参数"></fieldset>
+        <p id="imageOptionsHint" class="image-options-hint"></p>
+        </section>
+        <section class="settings-section" id="videoSettings" aria-labelledby="videoHeading">
+        <h3 id="videoHeading">视频生成</h3>
+        <div class="field"><span>会话视频模型</span><div class="directory-field"><select id="videoModelSelect" aria-label="视频模型"><option value="grok-imagine-video-1.5">grok-imagine-video-1.5</option></select><button type="button" class="button button-outline" id="refreshVideoModels">刷新</button></div><small id="videoModelHint">在对话中描述视频内容，生成完成后可直接播放和保存。</small></div>
+        <fieldset id="videoOptions" class="image-options" aria-label="视频参数"></fieldset>
+        <p id="videoOptionsHint" class="image-options-hint"></p>
+        </section>
+        <section class="settings-section" id="productSettings" aria-labelledby="productHeading">
+          <h3 id="productHeading">学术派 · Jarod-Pi <small id="productVersion"></small></h3>
+          <p id="updateStatus" role="status"></p>
+          <div class="product-actions"><button type="button" class="button button-outline" id="checkUpdates">检查程序更新</button><button type="button" class="button button-outline hidden" id="downloadUpdate">下载更新</button><button type="button" class="button button-primary hidden" id="installUpdate">重启并更新</button></div>
+          <h4>内置智能体资源</h4>
+          <p id="componentsStatus" role="status"></p>
+          <div class="product-actions"><button type="button" class="button button-outline" id="checkComponents">检查资源</button><button type="button" class="button button-outline hidden" id="installComponents">安装 / 继续下载</button><button type="button" class="button button-outline hidden" id="pauseComponents">暂停下载</button><button type="button" class="button button-primary hidden" id="restartResources">重启并启用</button></div>
+          <p id="productRemovalHint">更新只替换程序和内置资源，个人技能、会话和工作区文件会保留。可在 Windows“设置 → 应用 → 已安装的应用”中卸载学术派。</p>
+          <details><summary>本地数据目录</summary><code id="productDataDirectory"></code></details>
+        </section>
+        <div class="dialog-foot"><span id="settingsNote">保存后，当前对话下一次请求即使用新设置。</span><button class="button button-primary" id="saveSettingsButton" value="save">保存设置</button></div>
+      </form>
+    </dialog>
+
+    <div class="toast hidden" id="toast" role="status"></div>
+    <dialog class="image-dialog" id="imageDialog"><form method="dialog"><button class="icon-button" aria-label="关闭图片">×</button></form><img id="imagePreview" alt="图片大图" /><p id="imageCaption"></p></dialog>
+    <dialog class="command-dialog" id="commandDialog">
+      <form method="dialog"><div class="dialog-head"><h2 id="commandTitle">会话统计</h2><button class="icon-button" aria-label="关闭会话统计">×</button></div><pre id="commandResult"></pre></form>
+    </dialog>
+    <dialog class="rename-dialog" id="renameDialog">
+      <form id="renameForm" method="dialog">
+        <h2>重命名对话</h2>
+        <label class="field"><span>对话名称</span><input id="sessionNameInput" maxlength="120" required autocomplete="off" /></label>
+        <div class="rename-actions"><button class="button button-outline" value="cancel" formnovalidate>取消</button><button class="button button-primary" value="save">保存</button></div>
+      </form>
+    </dialog>
+    <dialog class="interaction-dialog" id="interactionDialog">
+      <form id="interactionForm" method="dialog">
+        <p class="eyebrow">学术派 / 确认</p>
+        <h2 id="interactionTitle">需要你的选择</h2>
+        <div id="interactionOptions" class="interaction-options"></div>
+        <textarea id="interactionText" class="interaction-text hidden" rows="5"></textarea>
+        <div class="interaction-actions"><button type="button" class="button button-outline" id="interactionCancel">取消</button><button class="button button-primary" id="interactionSubmit" value="submit">确定</button></div>
+      </form>
+    </dialog>
+    <script src="../node_modules/marked/lib/marked.umd.js"></script>
+    <script src="../node_modules/dompurify/dist/purify.min.js"></script>
+    <script src="./message-format.js"></script>
+    <script src="./branding.js"></script>
+    <script src="./reasoning-profiles.js"></script>
+    <script src="./product-ui.js"></script>
+    <script src="./renderer.js"></script>
+  </body>
+</html>

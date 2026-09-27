@@ -5,7 +5,7 @@
 | 分类 | 展示名称 | 原项目 |
 | --- | --- | --- |
 | 工作常用 | 一键制作原生PPTX | [hugohe3/ppt-master](https://github.com/hugohe3/ppt-master) |
-| 工作常用 | 图片风格精美PPT | [ningzimu/codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill) |
+| 工作常用 | 图片风格精美PPT | [jarodfund/codex-ppt-skill](https://github.com/jarodfund/codex-ppt-skill) |
 | 工作常用 | 搜全网 | [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) |
 | 工作常用 | 下全网 | [yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp) |
 | 通用科研工作台 | 读论文、管实验、记过程 | [alphaXiv/OpenResearch](https://github.com/alphaXiv/OpenResearch) |

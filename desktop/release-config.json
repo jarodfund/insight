@@ -1,0 +1,6 @@
+{
+  "distribution": "portable",
+  "updateUrl": "https://github.com/jarodfund/jarod-pi/releases/latest/download/",
+  "componentsUrl": "https://github.com/jarodfund/jarod-pi-components/releases/latest/download/",
+  "componentsPublicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA126LpMdAihIYjQ9kcBC5XN/cSdor+qZ4TvuQ75k2aBg=\n-----END PUBLIC KEY-----\n"
+}
