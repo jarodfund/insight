@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="desktop/src/icons/xueshupai.png" alt="Jarod-Pi emblem: a gold torch, laurel and white book pages" width="104" height="104">
+  <img src="desktop/src/icons/xueshupai.png" alt="Insight emblem: a gold torch, laurel and white book pages" width="104" height="104">
 </p>
 
-<h1 align="center">学术派 · Jarod-Pi</h1>
+<h1 align="center">学术派 · Insight</h1>
 
 <p align="center"><a href="README.zh-CN.md">简体中文</a> · <a href="README.en.md">English</a></p>
 
@@ -20,13 +20,13 @@
 
 <p align="center"><strong>18 built-in agents</strong> / <strong>Multiple models and sessions</strong> / <strong>Images and video</strong> / <strong>Your own skills</strong></p>
 
-![The actual Jarod-Pi interface: workspaces and history on the left, a research presentation example in the center, and four columns of research agents on the right](docs/assets/screenshots/research.png)
+![The actual Insight interface: workspaces and history on the left, a research presentation example in the center, and four columns of research agents on the right](docs/assets/screenshots/research.png)
 
 <p align="center"><sub>Actual Windows application, isolated demo sessions. Not a model benchmark; files mentioned in the example conversation were not generated. Click the image for full resolution.</sub></p>
 
-Jarod-Pi brings Pi's agent engine, model access and specialist skills into a Chinese-language desktop interface. Select your materials, describe your goal, and let the agent read files, use tools, delegate work and save results to your workspace. Start with a question, then keep researching, writing, presenting and creating around the same materials.
+Insight brings Pi's agent engine, model access and specialist skills into a Chinese-language desktop interface. Select your materials, describe your goal, and let the agent read files, use tools, delegate work and save results to your workspace. Start with a question, then keep researching, writing, presenting and creating around the same materials.
 
-> **Release status:** The corrective version is **0.2.5**, adding system-proxy support; 0.2.3 / 0.2.4 are no longer recommended for distribution. GitHub agent-resource Release 2 is live. Windows has passed launch, relocation and session-restoration checks, plus real download and selection tests for two agents using a clean profile. Client ZIPs and the complete product source changes are not published on GitHub yet. Linux and macOS are candidates awaiting native-machine testing and missing native dependencies. You need your own JarodFund API key; model calls and some external services may incur charges. See [downloads and platform status](docs/DOWNLOADS.md).
+> **Release status:** Insight 0.2.7 ZIPs for Windows, Linux and macOS Apple Silicon are being tested locally and are not yet published as a GitHub Release. Linux/macOS still need native startup checks; there is no Intel Mac package in this candidate set. You need your own JarodFund API key; model calls and some external services may incur charges. See [downloads and platform status](docs/DOWNLOADS.md).
 
 <a id="capabilities"></a>
 
@@ -124,7 +124,7 @@ Choose image and video models independently of the chat model. Each family uses 
 - **Inspect the process:** read Markdown, tables, code, reasoning and tool results in their respective views, with copying support.
 - **A restrained interface:** Bauhaus-inspired geometry, a limited palette, light and dark themes, side-by-side panels on wide screens and a collapsible agent panel on narrower ones.
 
-![Jarod-Pi dark conversation view showing workspaces, history, model selection, a Markdown table and the message composer](docs/assets/screenshots/conversation-dark.png)
+![Insight dark conversation view showing workspaces, history, model selection, a Markdown table and the message composer](docs/assets/screenshots/conversation-dark.png)
 
 <p align="center"><sub>Actual dark-theme interface with demo content. More in the <a href="docs/GALLERY.md">screenshot gallery</a>.</sub></p>
 
@@ -132,11 +132,11 @@ Choose image and video models independently of the chat model. Each family uses 
 
 ## Why Pi is the foundation
 
-**A small core, capabilities composed as needed.** Jarod-Pi uses Pi's model interaction, tool execution, sessions and context management. Specialist workflows come through extensions and skills: skill summaries are discoverable, while their full instructions are read for the task rather than keeping every workflow in context at all times.
+**A small core, capabilities composed as needed.** Insight uses Pi's model interaction, tool execution, sessions and context management. Specialist workflows come through extensions and skills: skill summaries are discoverable, while their full instructions are read for the task rather than keeping every workflow in context at all times.
 
-Jarod-Pi adds the product layer:
+Insight adds the product layer:
 
-| Pi foundation | Jarod-Pi integration |
+| Pi foundation | Insight integration |
 | :--- | :--- |
 | Models, tools and native sessions | Chinese desktop interface, workspaces, session switching and history management |
 | Extensions and skills | Preconfigured tools, specialist cards and a personal-skills area |
@@ -190,8 +190,8 @@ The desktop product lives in [`desktop/`](desktop). Pi's agent, model and termin
 
 ### Acknowledgments and licenses
 
-Jarod-Pi builds on the work of **Mario Zechner and the Pi community**, alongside many open-source ecosystem projects. Pi's [MIT license and copyright notice](LICENSE) are preserved. Third-party agents, dependencies and resources retain their own licenses; the entire resource collection must not be described as MIT-licensed. See the ecosystem documentation and notices in the respective resource packages.
+Insight builds on the work of **Mario Zechner and the Pi community**, alongside many open-source ecosystem projects. Pi's [MIT license and copyright notice](LICENSE) are preserved. Third-party agents, dependencies and resources retain their own licenses; the entire resource collection must not be described as MIT-licensed. See the ecosystem documentation and notices in the respective resource packages.
 
 ---
 
-<p align="center"><strong>学术派 · Jarod-Pi</strong><br><sub>A place to start, a record of the process, and results you can build on.</sub></p>
+<p align="center"><strong>学术派 · Insight</strong><br><sub>A place to start, a record of the process, and results you can build on.</sub></p>

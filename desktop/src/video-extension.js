@@ -8,7 +8,7 @@ module.exports = function desktopVideos(pi) {
     description: "Read the user's current video model, saved defaults, allowed parameter choices and existing video tasks in this workspace. No billing. Read before video_gen. Only the user can change the selected model in desktop Settings.",
     parameters: { type: "object", properties: {}, additionalProperties: false },
     async execute(_id, _args, signal) {
-      const response = await fetch(new URL("/settings", process.env.PI_DESKTOP_VIDEO_BRIDGE), { headers: { Authorization: `Bearer ${process.env.PI_DESKTOP_VIDEO_TOKEN}` }, signal });
+      const response = await fetch(new URL("/settings", process.env.INSIGHT_VIDEO_BRIDGE), { headers: { Authorization: `Bearer ${process.env.INSIGHT_VIDEO_TOKEN}` }, signal });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "视频设置读取失败。");
       return { content: [{ type: "text", text: JSON.stringify(result) }] };
@@ -33,8 +33,8 @@ module.exports = function desktopVideos(pi) {
       return Object.fromEntries(Object.entries(args).filter(([, value]) => typeof value !== "string" || value.trim()));
     },
     async execute(_id, args, signal, _update, ctx) {
-      const response = await fetch(process.env.PI_DESKTOP_VIDEO_BRIDGE, {
-        method: "POST", headers: { Authorization: `Bearer ${process.env.PI_DESKTOP_VIDEO_TOKEN}`, "Content-Type": "application/json" },
+      const response = await fetch(process.env.INSIGHT_VIDEO_BRIDGE, {
+        method: "POST", headers: { Authorization: `Bearer ${process.env.INSIGHT_VIDEO_TOKEN}`, "Content-Type": "application/json" },
         body: JSON.stringify({ args, cwd: ctx.cwd }), signal, dispatcher,
       });
       const result = await response.json();

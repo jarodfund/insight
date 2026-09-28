@@ -3,8 +3,8 @@
 module.exports = function desktopPermissions(pi) {
   pi.on("tool_call", async (event, ctx) => {
     try {
-      const response = await fetch(process.env.PI_DESKTOP_PERMISSION_BRIDGE, {
-        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.PI_DESKTOP_PERMISSION_TOKEN}` },
+      const response = await fetch(process.env.INSIGHT_PERMISSION_BRIDGE, {
+        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.INSIGHT_PERMISSION_TOKEN}` },
         body: JSON.stringify({ toolName: event.toolName, input: event.input, cwd: ctx.cwd }),
       });
       const result = await response.json();

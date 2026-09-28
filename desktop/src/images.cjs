@@ -2,6 +2,7 @@ const fs = require("node:fs/promises");
 const path = require("node:path");
 const { randomUUID } = require("node:crypto");
 const { IMAGE_PROFILES, imageRequestOptions, buildImageRequest } = require("./image-models.cjs");
+const { directoryName } = require("./branding.js");
 const { IMAGE_TIMEOUT_MS, imageDispatcher } = require("./image-http.cjs");
 
 const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
@@ -164,7 +165,7 @@ async function generateImage({ args, model, preferences, cwd, key, baseUrl, nati
         } catch (error) { if (attempt === 2 || signal.aborted) throw error; }
       }
       signal.throwIfAborted();
-      const saved = await saveVerifiedImage(bytes, path.join(cwd, "outputs", "Jarod-Pi", "images"), nativeImage, "generated", MAX_OUTPUT_BYTES);
+      const saved = await saveVerifiedImage(bytes, path.join(cwd, "outputs", directoryName, "images"), nativeImage, "generated", MAX_OUTPUT_BYTES);
       files.push(saved);
       if (options.size && options.size !== "auto" && options.size !== `${saved.width}x${saved.height}`) warnings.push(`第 ${index + 1} 张请求 ${options.size}，实际返回 ${saved.width}x${saved.height}；已原样保存，未缩放。`);
       if (options.background === "transparent" && saved.mimeType === "image/jpeg") warnings.push(`第 ${index + 1} 张返回 JPEG，不支持透明通道；已原样保存。`);

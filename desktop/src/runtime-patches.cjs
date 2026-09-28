@@ -25,7 +25,7 @@ function ensureExtensionReloadPatch(cli) {
   const patched = patchJitiSource(original, version);
   if (patched === original) return;
   // Preserve the exact installed file and replace atomically before Pi starts.
-  const backup = `${file}.pi-desktop-original`;
+  const backup = `${file}.insight-original`;
   try { fs.writeFileSync(backup, original, { flag: "wx" }); }
   catch (error) { if (error.code !== "EEXIST") throw error; }
   const temporary = `${file}.${process.pid}.tmp`;

@@ -5,6 +5,7 @@ const { Readable, Transform } = require("node:stream");
 const { pipeline } = require("node:stream/promises");
 const { setTimeout: delay } = require("node:timers/promises");
 const { videoRequest } = require("./video-models.cjs");
+const { directoryName, legacyDirectoryNames } = require("./branding.js");
 
 const VIDEO_TIMEOUT_MS = 30 * 60 * 1000;
 const MAX_VIDEO_BYTES = 512 * 1024 * 1024;
@@ -96,7 +97,9 @@ class VideoJobs {
   async localFile(id, key, cwd) {
     const record = this.get(id, key, cwd);
     const file = record.file;
-    if (!file || record.status !== "completed" || ![path.join(record.cwd, "outputs", "Jarod-Pi", "videos"), path.join(record.cwd, "outputs", "pi-videos")].some((directory) => samePath(path.dirname(file.path), directory))) throw new Error("视频尚未下载完成。");
+    const outputRoots = [directoryName, ...legacyDirectoryNames].map((name) => path.join(record.cwd, "outputs", name, "videos"));
+    outputRoots.push(path.join(record.cwd, "outputs", "pi-videos"));
+    if (!file || record.status !== "completed" || !outputRoots.some((directory) => samePath(path.dirname(file.path), directory))) throw new Error("视频尚未下载完成。");
     const stat = await fs.promises.stat(file.path);
     if (!stat.isFile() || stat.size <= 0 || stat.size !== file.bytes) throw new Error("视频文件缺失或已改变，请继续获取原任务。");
     return file;
@@ -115,7 +118,7 @@ class VideoJobs {
   }
 
   async download(record, baseUrl, key, signal) {
-    const directory = path.join(record.cwd, "outputs", "Jarod-Pi", "videos");
+    const directory = path.join(record.cwd, "outputs", directoryName, "videos");
     await fs.promises.mkdir(directory, { recursive: true });
     for (let attempt = 0; ; attempt++) {
       const file = path.join(directory, `generated-${record.id}-${randomUUID()}.mp4`);

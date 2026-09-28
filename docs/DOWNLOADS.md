@@ -2,63 +2,36 @@
 
 [返回首页](../README.md)
 
-本次修正版本为 **0.2.5**。0.2.3 指向已停用的旧资源服务器；0.2.4 已迁移 GitHub 地址，但资源下载未沿用系统代理。本文将客户端压缩包、智能体资源服务和各平台验收状态分别记录，不将本地文件当作已发布的 GitHub 下载。
+当前源码版本为 **Insight 0.2.7**。以下 ZIP 是本地候选包；尚未发布到 GitHub Release，不能把本地文件当作正式下载。
 
-## 现有压缩包
+## 本地候选包
 
-以下为本地 0.2.5 构建结果，客户端 ZIP 尚未上传为 GitHub Release 资产。大小按 MiB 计，1 MiB = 1,048,576 字节。
+文件目录：`E:\快进快出\.artifacts\Insight-0.2.7-Final-Candidate\`
 
-| 平台 | 文件名 | 压缩包大小 | 验证状态 |
+| 平台 | 文件 | 大小 | 当前验证边界 |
 | :--- | :--- | ---: | :--- |
-| Windows x64 | `Jarod-Pi-0.2.5-Windows-x64.zip` | 320.7 MiB | 已完成启动、目录迁移、会话恢复及两类智能体真实联网加载验收 |
-| Linux x64 | `Jarod-Pi-0.2.5-Linux-x64.zip` | 340.8 MiB | 候选；归档、架构与权限已校验，待实机运行验收 |
-| macOS Apple Silicon | `Jarod-Pi-0.2.5-macOS-Apple-Silicon.zip` | 344.6 MiB | 候选；归档、架构与权限已校验，待实机运行验收 |
-| macOS Intel | `Jarod-Pi-0.2.5-macOS-Intel.zip` | 347.7 MiB | 候选；归档、架构与权限已校验，待实机运行验收 |
+| Windows x64 | `Insight-0.2.7-Windows-x64.zip` | 330,101,971 bytes | ZIP/CRC、源码替换和隔离启动已验收 |
+| Linux x64 | `Insight-0.2.7-Linux-x64.zip` | 352,679,052 bytes | ZIP/CRC 已验收；尚未在 Linux 实机启动 |
+| macOS Apple Silicon | `Insight-0.2.7-macOS-Apple-Silicon.zip` | 354,460,770 bytes | ZIP/CRC 已验收；尚未在 Apple Silicon 实机启动 |
 
-三个系统对应四个包，因为 macOS 区分 Apple Silicon 与 Intel。Linux/macOS 还有部分专业智能体的原生运行资源待补齐；不能直接使用 Windows 原生资源。
+当前没有 macOS Intel 包。重打包桌面源码不等于补齐 Linux/macOS 上所有专业智能体的本机依赖。
 
-## 三个版本的差别与故障原因
+发布前需在隔离配置中启动 Windows 包；Linux 和 macOS 则需在对应机器启动验收。通过后才能上传至 [`jarodfund/insight Releases`](https://github.com/jarodfund/insight/releases)，并在此处提供正式下载链接和完整 SHA-256。
 
-0.2.4 将资源与更新地址迁移到 GitHub Releases，支持平铺资产名称、受限 HTTPS 重定向和断点续传。它没有另换一套聊天模型、推理强度、界面或智能体内容；两版内置资源目录的 SHA-256 一致。
+## 本地文件摘要
 
-2026-09-25 已确认首次 `app:prepare-agent: 资源 HTTP 404` 的原因：0.2.4 客户端已有 GitHub 地址，但资源仓库尚未发布对应 Release，实际 ZIP 不存在。不能通过降级到指向旧服务器的 0.2.3 解决。
-
-随后实测发现独立的网络问题：同一台机器中，0.2.4 使用的 Node 下载直连 GitHub 约 10 秒后超时，Electron 系统网络约 0.7 秒即收到 HTTP 响应。0.2.5 将资源与免安装更新下载接入系统网络配置，保留手动重定向白名单、签名、大小、SHA-256、取消与续传；不携带 Cookie 或模型 Key。
-
-2026-09-25（北京时间）资源 Release 2 已公开发布，35 个资产的远端大小和 SHA-256 全部核对通过。普通无鉴权下载已验证四个平台清单签名、30 个 ZIP 的 Range/206，以及 404 后恢复和断点续传。实际打包的 Windows 0.2.5 在全新配置中成功安装并选中“写综述 / 初稿 / 模拟审稿”和“读论文、管实验、记过程”，同时完成 OpenResearch CLI 依赖的下载、摘要和文件校验；资源更新检查返回正常。未提交模型付费请求，未逐一运行所有智能体的业务任务。
-
-0.2.4 的资源目录与本次发布兼容，补齐远端资源解决了缺资产导致的 404；但不会自动修复旧客户端下载器的代理问题，所以新分发仍使用 0.2.5。主程序 GitHub Release 尚未发布，不能把资源上线等同于客户端在线更新已可用。
-
-<details>
-<summary>0.2.5 本地构建 SHA-256</summary>
-
-这些摘要只对应上述 0.2.5 文件。0.2.4 原包没有覆盖或改名；两版使用相同资源目录和资源摘要。
+以下 SHA-256 与本地候选包逐字节对应；发布前从公开 Release 重新下载后仍需复验。
 
 ```text
-0f3762096cabc6c31c2a6cc1c4055723e50b7896ae894c1ab92d0226693cef8a  Jarod-Pi-0.2.5-Windows-x64.zip
-f96b5f9e138e4ae419ac49cc73f9340e39d6702628aa6f528a8541901e34fc36  Jarod-Pi-0.2.5-Linux-x64.zip
-538922c02428c4da772cac031b2020047ac31b3d9c40653c848ed4dfce361274  Jarod-Pi-0.2.5-macOS-Apple-Silicon.zip
-3475b2c7b0adc38ff373e79bdd4d48b20e890550ddf76151ca4e376868c2ac17  Jarod-Pi-0.2.5-macOS-Intel.zip
+12020bd427e6e9d3254306ed98b7b9a0fb9f5df5a3c4ca4fa31a85547738898d  Insight-0.2.7-Windows-x64.zip
+b2086c35899d3081b729cac44fd59b89d21f0f149770ecc42524288ee61d4dee  Insight-0.2.7-Linux-x64.zip
+34b367b46f88006321993ef9112a9790537b90503ea50212ae94e0f7b3b2d8ad  Insight-0.2.7-macOS-Apple-Silicon.zip
 ```
 
-</details>
+## 下载与使用
 
-## 发布后的使用流程
+正式发布后，按系统和 CPU 架构下载完整 ZIP，并解压到普通用户可写目录。Windows 双击根目录的 `学术派.exe`；Linux/macOS 在解压目录运行 `bash 启动学术派.sh`。不要在压缩软件内直接运行，也不要只移动启动器。
 
-1. 从项目正式 Release 选择对应系统和处理器的 ZIP，并核对随版摘要。
-2. 完整解压到普通用户可写的目录。不要在压缩软件里直接运行，也不要只复制启动文件。
-3. Windows 双击根目录的 `学术派.exe`；Linux/macOS 在解压目录运行 `bash 启动学术派.sh`。
-4. 在设置中填入自己的 JarodFund Key，点击验证并连接，选择工作区和模型。
-5. 选取智能体并说明目标。大型资源按需下载；可暂停、继续，已安装的共享资源可复用。
+Windows 个人数据目录为 `%APPDATA%\Insight`。工作成果保存在所选工作区；新生成图片和视频写入 `outputs/Insight/images` 与 `outputs/Insight/videos`。程序更新时退出旧版，将新版解压到新目录。删除程序目录不会删除个人会话、设置或工作区文件。
 
-基础包随附 Node 与 Electron，无需使用者另行安装。Linux 仍需可用的桌面图形环境和系统依赖。macOS 的终端入口内部仍使用 Electron.app，脚本启动不会消除系统安全检查；本产品尚未额外签名、公证，可能出现系统提示。
-
-## 数据与升级
-
-- Windows 个人数据位于 `%APPDATA%\Jarod-Pi`，工作成果保存在所选工作区。程序目录与个人数据分开。
-- 更新主程序时退出旧版，将新版完整解压到新目录，再启动；不要覆盖仍在运行的程序。
-- 当前主程序更新下载完整 ZIP；智能体资源按包更新，不等于主程序已实现文件级差分更新。
-- 移除程序只需退出后删除解压目录，个人会话、技能及工作成果不会因此自动删除。
-- 不要将自己的 Key、会话、浏览器登录态或私人工作文件重新压入分发包。
-
-详见[免安装版说明](../desktop/PORTABLE.md)和[使用说明](../desktop/README.md)。
+首次启动会尝试迁移旧版个人数据并保留原目录；冲突时不会静默覆盖。旧目录名只用于迁移识别，详见[免安装版说明](../desktop/PORTABLE.md)。

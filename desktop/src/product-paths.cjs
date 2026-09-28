@@ -3,7 +3,7 @@ const path = require("node:path");
 const { portablePlatform } = require("./portable-platform.cjs");
 
 const developmentRoot = path.resolve(__dirname, "../..");
-const distributionRoot = process.env.JAROD_PI_PRODUCT_ROOT || (process.resourcesPath && path.join(process.resourcesPath, "product"));
+const distributionRoot = process.env.INSIGHT_PRODUCT_ROOT || (process.resourcesPath && path.join(process.resourcesPath, "product"));
 const productRoot = distributionRoot && fs.existsSync(path.join(distributionRoot, "runtime")) ? distributionRoot : developmentRoot;
 const packagedRuntime = path.join(productRoot, "runtime");
 const runtimeDirectory = fs.existsSync(packagedRuntime) ? packagedRuntime : path.join(productRoot, ".pi-install");

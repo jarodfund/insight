@@ -27,7 +27,7 @@ exercise it. The MCP test server was temporary and is not left configured.
 
 ## Configuration
 
-Personal configuration paths below are relative to `%APPDATA%\Jarod-Pi\agent`.
+Personal configuration paths below are relative to `%APPDATA%\Insight\agent`.
 Packaged extension code lives in `components/installed/<hash>/node_modules` and
 is connected to the native agent configuration on restart:
 

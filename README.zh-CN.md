@@ -2,7 +2,7 @@
   <img src="desktop/src/icons/xueshupai.png" alt="学术派徽标：金色火炬、月桂与白色书页" width="104" height="104">
 </p>
 
-<h1 align="center">学术派 · Jarod-Pi</h1>
+<h1 align="center">学术派 · Insight</h1>
 
 <p align="center"><a href="README.zh-CN.md">简体中文</a> · <a href="README.en.md">English</a></p>
 
@@ -26,7 +26,7 @@
 
 学术派把 Pi 的代理引擎、多模型接入和专业技能整合进中文桌面界面。放入材料，说明目标，让 AI 读取文件、调用工具、分工处理，并把成果保存到工作区。既可以从一个简单问题开始，也可以围绕同一份材料持续做研究、写作、演示与创作。
 
-> **发布状态：** 当前修正版为 **0.2.5**，补充系统代理支持，不再建议分发 0.2.3 / 0.2.4。GitHub 智能体资源 Release 2 已上线；Windows 已完成本地启动、目录迁移、会话恢复，以及干净配置下两类智能体的真实下载和选择验收。客户端 ZIP 和完整产品源码尚未发布到 GitHub。Linux 与 macOS 为待实机验收的候选包，部分原生依赖尚待补齐。需要自己的 JarodFund Key，模型调用及部分外部服务可能产生费用。详见[下载与平台状态](docs/DOWNLOADS.md)。
+> **发布状态：** Insight 0.2.7 的 Windows、Linux 和 macOS Apple Silicon ZIP 正在本地验收，尚未作为 GitHub Release 发布；Linux/macOS 仍待原生系统启动验证，目前没有 Intel Mac 包。需要自己的 JarodFund Key，模型调用及部分外部服务可能产生费用。详见[下载与平台状态](docs/DOWNLOADS.md)。
 
 <a id="capabilities"></a>
 
@@ -194,4 +194,4 @@
 
 ---
 
-<p align="center"><strong>学术派 · Jarod-Pi</strong><br><sub>让想法有起点，让过程有记录，让成果可继续。</sub></p>
+<p align="center"><strong>学术派 · Insight</strong><br><sub>让想法有起点，让过程有记录，让成果可继续。</sub></p>

@@ -7,7 +7,7 @@ const { productRoot } = require("./product-paths.cjs");
 
 module.exports = function desktopSpecialists(pi) {
   const root = productRoot;
-  const prefix = process.env.PI_DESKTOP_AGENT_PREFIX;
+  const prefix = process.env.INSIGHT_AGENT_PREFIX;
   const personalInstallation = process.env.PI_CODING_AGENT_DIR
     ? `用户要求设计或安装自己的智能体时，学术派的个人技能安装目录是 ${path.join(process.env.PI_CODING_AGENT_DIR, "skills")}。使用独立文件夹和带 name、description 的 SKILL.md，保留所需脚本与相对引用文件；先在工作区准备资料，仅在用户要求安装时写入此目录，并遵守权限审批、不覆盖已有技能。安装后提示用户在“我的智能体”点击“刷新智能体”，无需重启；不要承诺只放到项目 .pi/skills 或其他客户端目录就会显示。`
     : "";

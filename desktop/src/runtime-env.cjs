@@ -5,7 +5,7 @@ const { portablePlatform } = require("./portable-platform.cjs");
 
 function createRuntimeEnvironment(environment, { node, cli, agentDirectory, key, specialistDirectory }) {
   const env = { ...environment };
-  const ecosystem = JSON.parse(environment.JAROD_PI_COMPONENTS || "{}").ecosystem;
+  const ecosystem = JSON.parse(environment.INSIGHT_COMPONENTS || "{}").ecosystem;
   const pathKeys = Object.keys(env).filter((name) => process.platform === "win32" ? name.toLowerCase() === "path" : name === "PATH");
   const pathKey = pathKeys[0] || "PATH";
   const inheritedPath = env[pathKey];
@@ -20,13 +20,13 @@ function createRuntimeEnvironment(environment, { node, cli, agentDirectory, key,
     inheritedPath,
   ].filter(Boolean).join(path.delimiter);
   env.PI_CODING_AGENT_DIR = agentDirectory;
-  env.JAROD_PI_SHARED_MODULES = "1";
+  env.INSIGHT_SHARED_MODULES = "1";
   env.JARODFUND_API_KEY = key;
   env.PI_SUBAGENTS_PI_CODING_AGENT_PACKAGE_ROOT = path.dirname(path.dirname(cli));
   // Do not import MCP connections or credentials from other desktop applications.
   env.PI_MCP_CONFIG_MODE = "exclusive";
   if (specialistDirectory) env.MCPORTER_CONFIG = path.join(specialistDirectory, "mcporter.json");
-  env.PI_DESKTOP_EXTENSION_CACHE = JSON.stringify([...reusableExtensionPaths(agentDirectory), ...(ecosystem ? reusableExtensionPaths(path.dirname(ecosystem), path.basename(ecosystem)) : [])]);
+  env.INSIGHT_EXTENSION_CACHE = JSON.stringify([...reusableExtensionPaths(agentDirectory), ...(ecosystem ? reusableExtensionPaths(path.dirname(ecosystem), path.basename(ecosystem)) : [])]);
   if (specialistDirectory) {
     if (portable) {
       const layout = JSON.parse(fs.readFileSync(path.join(specialistDirectory, "portable.json"), "utf8"));

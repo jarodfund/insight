@@ -9,8 +9,8 @@ module.exports = function desktopImages(pi) {
     description: "Read the user's CURRENT selected image model, saved default options and available models with exact limits/choices. No generation or billing. Call before image_gen so current-session setting changes and reference/count limits are respected. Image generation always uses selectedModel; only the user can change it in desktop Settings.",
     parameters: { type: "object", properties: {}, additionalProperties: false },
     async execute(_id, _args, signal) {
-      const response = await fetch(new URL("/settings", process.env.PI_DESKTOP_IMAGE_BRIDGE), {
-        headers: { Authorization: `Bearer ${process.env.PI_DESKTOP_IMAGE_TOKEN}` }, signal,
+      const response = await fetch(new URL("/settings", process.env.INSIGHT_IMAGE_BRIDGE), {
+        headers: { Authorization: `Bearer ${process.env.INSIGHT_IMAGE_TOKEN}` }, signal,
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "生图设置读取失败。");
@@ -46,8 +46,8 @@ module.exports = function desktopImages(pi) {
         !optional.includes(field) || typeof value !== "string" || value.trim() !== ""));
     },
     async execute(_id, args, signal, _update, ctx) {
-      const response = await fetch(process.env.PI_DESKTOP_IMAGE_BRIDGE, {
-        method: "POST", headers: { Authorization: `Bearer ${process.env.PI_DESKTOP_IMAGE_TOKEN}`, "Content-Type": "application/json" },
+      const response = await fetch(process.env.INSIGHT_IMAGE_BRIDGE, {
+        method: "POST", headers: { Authorization: `Bearer ${process.env.INSIGHT_IMAGE_TOKEN}`, "Content-Type": "application/json" },
         body: JSON.stringify({ args, cwd: ctx.cwd }), signal, dispatcher: imageDispatcher,
       });
       const result = await response.json();

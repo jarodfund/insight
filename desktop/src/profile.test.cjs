@@ -1,0 +1,44 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const { test } = require("node:test");
+const { legacyProfileDirectory, migrateProfile, prepareProfileEncryption } = require("./profile.cjs");
+
+test("migrates product data without stale runtime links or index paths", async (t) => {
+  const parent = fs.mkdtempSync(path.join(os.tmpdir(), "insight-migration-"));
+  t.after(() => fs.rmSync(parent, { recursive: true, force: true }));
+  const old = path.join(parent, "Jarod-Pi");
+  const next = path.join(parent, "Insight");
+  const empty = path.join(parent, "pi-desktop");
+  fs.mkdirSync(empty);
+  fs.mkdirSync(path.join(old, "agent", "sessions"), { recursive: true });
+  fs.mkdirSync(path.join(old, "portable-components", "installed", "abc"), { recursive: true });
+  fs.mkdirSync(path.join(old, "portable-components", "runtimes", "stale"), { recursive: true });
+  fs.mkdirSync(path.join(old, "portable-components", "downloads"), { recursive: true });
+  fs.writeFileSync(path.join(old, "Local State"), "encryption state");
+  fs.writeFileSync(path.join(old, "jarodfund-key.enc"), "encrypted bytes");
+  fs.writeFileSync(path.join(old, "agent", "sessions", "history.jsonl"), "history");
+  fs.writeFileSync(path.join(old, "portable-components", "installed", "abc", "skill.txt"), "cached skill");
+  fs.writeFileSync(path.join(old, "portable-components", "runtimes", "stale", ".complete"), "old projection");
+  fs.writeFileSync(path.join(old, "portable-components", "downloads", "task.zip.part"), "partial download");
+  const oldSession = path.join(old, "agent", "sessions", "history.jsonl");
+  fs.writeFileSync(path.join(old, "desktop-library.json"), JSON.stringify({ sessions: { [oldSession.toLowerCase()]: { name: "History" } } }));
+  fs.writeFileSync(path.join(old, "desktop-library.json.index.json"), JSON.stringify({ entries: { [oldSession.toLowerCase()]: { info: { path: oldSession, cwd: "E:\\Research" } } } }));
+  fs.writeFileSync(path.join(old, "desktop-settings.json"), JSON.stringify({ cwd: "E:\\Research", agentDirectory: path.join(old, "agent") }));
+
+  assert.equal(legacyProfileDirectory(parent, ["pi-desktop", "Jarod-Pi"]), old);
+  prepareProfileEncryption(old, next);
+  assert.equal(fs.readFileSync(path.join(next, "Local State"), "utf8"), "encryption state");
+  assert.equal(await migrateProfile(old, next), true);
+  assert.equal(fs.readFileSync(path.join(next, "jarodfund-key.enc"), "utf8"), "encrypted bytes");
+  assert.equal(fs.readFileSync(path.join(next, "agent", "sessions", "history.jsonl"), "utf8"), "history");
+  assert.equal(fs.readFileSync(path.join(next, "portable-components", "installed", "abc", "skill.txt"), "utf8"), "cached skill");
+  assert.equal(fs.readFileSync(path.join(next, "portable-components", "downloads", "task.zip.part"), "utf8"), "partial download");
+  assert.equal(fs.existsSync(path.join(next, "portable-components", "runtimes")), false);
+  const index = JSON.parse(fs.readFileSync(path.join(next, "desktop-library.json.index.json"), "utf8"));
+  assert.equal(Object.keys(index.entries)[0], path.join(next, "agent", "sessions", "history.jsonl").toLowerCase());
+  assert.equal(index.entries[Object.keys(index.entries)[0]].info.path, path.join(next, "agent", "sessions", "history.jsonl"));
+  assert.equal(fs.readFileSync(path.join(old, "jarodfund-key.enc"), "utf8"), "encrypted bytes");
+  assert.equal(await migrateProfile(old, next), false);
+});

@@ -1,6 +1,6 @@
 # Pi 上游项目说明
 
-以下保留学术派改写首页前的 Pi README，便于查阅上游开发说明。相对链接已调整到本仓库目录；发布、npm 包和社区信息描述的是上游 Pi，不是 Jarod-Pi 的发布承诺。
+以下保留学术派改写首页前的 Pi README，便于查阅上游开发说明。相对链接已调整到本仓库目录；发布、npm 包和社区信息描述的是上游 Pi，不是 Insight 的发布承诺。
 
 上游：<https://github.com/earendil-works/pi>。学术派的产品说明请返回[首页](../README.md)。
 

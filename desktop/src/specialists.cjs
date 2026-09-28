@@ -11,7 +11,7 @@ const { node } = require("./product-paths.cjs");
 const { agentComponents } = require("./component-plan.cjs");
 const { portablePlatform } = require("./portable-platform.cjs");
 
-function componentPaths() { return JSON.parse(process.env.JAROD_PI_COMPONENTS || "{}"); }
+function componentPaths() { return JSON.parse(process.env.INSIGHT_COMPONENTS || "{}"); }
 
 const AGENTS = [
   { id: "ppt-master", group: "工作常用", name: "一键制作原生PPTX", description: "产出是真正可编辑的 .pptx：形状、母版、图表、表格、公式都是 PowerPoint 原生对象。", tag: "原生可编辑", entry: "skills/ppt-master/SKILL.md", hint: "告诉我主题、受众和页数，也可以上传已有材料或模板。" },
@@ -47,7 +47,7 @@ function agentCatalog(root) {
   let creators;
   try { creators = JSON.parse(fs.readFileSync(path.join(runtime.directory, "creators.json"), "utf8")); } catch { /* Creator components have not been provisioned. */ }
   return AGENTS.map((agent) => {
-    if (process.env.JAROD_PI_ON_DEMAND === "1") {
+    if (process.env.INSIGHT_ON_DEMAND === "1") {
       const required = agentComponents(agent);
       const directory = agent.kind === "research" ? components.research : agent.kind === "perspective" ? components.perspectives : components[agent.id];
       const entry = directory && path.join(directory, ...(agent.kind ? [agent.id] : []), agent.entry);

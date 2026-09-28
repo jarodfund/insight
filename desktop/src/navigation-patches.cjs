@@ -34,11 +34,11 @@ const CACHE_ORIGINAL = `const extensionCache = new Map();
 export function clearExtensionCache() {
     extensionCache.clear();`;
 const CACHE_PATCHED = `const extensionCache = new Map();
-// pi-desktop: keep reviewed installed module factories across cwd changes.
+// Insight: keep reviewed installed module factories across cwd changes.
 const desktopExtensionCache = new Map();
 function extensionFactoryCache(extensionPath) {
     try {
-        const entries = JSON.parse(process.env.PI_DESKTOP_EXTENSION_CACHE || "[]");
+        const entries = JSON.parse(process.env.INSIGHT_EXTENSION_CACHE || "[]");
         if (process.env.PI_SUBAGENT_CHILD !== "1" && process.env.PI_SUBAGENTS_HERDR_BRIDGE !== "1" &&
             Array.isArray(entries) && entries.includes(extensionPath)) return desktopExtensionCache;
     } catch { /* Invalid opt-in falls back to native cache rules. */ }
@@ -47,6 +47,7 @@ function extensionFactoryCache(extensionPath) {
 export function clearExtensionCache() {
     desktopExtensionCache.clear();
     extensionCache.clear();`;
+const LEGACY_CACHE_PATCHED = CACHE_PATCHED.replace("// Insight:", "// pi-desktop:").replace("INSIGHT_EXTENSION_CACHE", "PI_DESKTOP_EXTENSION_CACHE");
 
 const CWD_ORIGINAL = `    if (extensionCacheCwd !== undefined && extensionCacheCwd !== resolvedCwd) {
         clearExtensionCache();
@@ -70,12 +71,13 @@ const LOOKUP_PATCHED = `async function loadExtensionModule(extensionPath, cacheT
 const BIND_ORIGINAL = `    const rebindSession = async () => {
         session = runtimeHost.session;
         await session.bindExtensions({`;
-const BIND_PATCHED = `    // pi-desktop: runtime replacement already invokes this callback once.
+const BIND_PATCHED = `    // Insight: runtime replacement already invokes this callback once.
     let desktopBoundSession;
     const rebindSession = async () => {
         session = runtimeHost.session;
         if (desktopBoundSession === session) return;
         await session.bindExtensions({`;
+const LEGACY_BIND_PATCHED = BIND_PATCHED.replace("// Insight:", "// pi-desktop:");
 const SUBSCRIBE_ORIGINAL = `        unsubscribeBackpressure = session.agent.subscribe(async () => {
             await waitForRawStdoutBackpressure();
         });`;
@@ -96,10 +98,12 @@ function patchNavigationSource(source, version, kind) {
   if (!replacements.length) throw new Error(`Unknown navigation patch: ${kind}`);
   const newline = source.includes("\r\n") ? "\r\n" : "\n";
   let patched = source.replaceAll("\r\n", "\n");
+  const legacyReplacement = kind === "loader" ? [LEGACY_CACHE_PATCHED, CACHE_PATCHED] : kind === "rpc" ? [LEGACY_BIND_PATCHED, BIND_PATCHED] : null;
+  if (legacyReplacement && patched.includes(legacyReplacement[0])) patched = patched.replace(legacyReplacement[0], legacyReplacement[1]);
   if (replacements.every(([, after]) => patched.split(after).length === 2)) {
     const remainder = replacements.reduce((value, [, after]) => value.replace(after, ""), patched);
     if (replacements.some(([before]) => remainder.includes(before))) throw new Error(`Pi ${kind} navigation patch contains mixed original and patched code.`);
-    return source;
+    return patched.replaceAll("\n", newline);
   }
   for (const [before, after] of replacements) {
     if (patched.split(before).length !== 2 || patched.includes(after)) {
@@ -124,7 +128,7 @@ function ensureNavigationPatches(cli) {
   });
   for (const { file, original, patched } of files) {
     if (original === patched) continue;
-    try { fs.writeFileSync(`${file}.pi-desktop-original`, original, { flag: "wx" }); }
+    try { fs.writeFileSync(`${file}.insight-original`, original, { flag: "wx" }); }
     catch (error) { if (error.code !== "EEXIST") throw error; }
     const temporary = `${file}.${process.pid}.tmp`;
     try {

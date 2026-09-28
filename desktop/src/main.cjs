@@ -33,7 +33,7 @@ const { createPermissionBridge } = require("./permission-bridge.cjs");
 const { conversationHistory } = require("./conversation-history.cjs");
 const { name: APP_NAME } = require("./branding.js");
 const brand = require("./branding.js");
-const { migrateProfile, prepareProfileEncryption } = require("./profile.cjs");
+const { legacyProfileDirectory, migrateProfile, prepareProfileEncryption } = require("./profile.cjs");
 const runtime = require("./product-paths.cjs");
 const { autoUpdater } = require("electron-updater");
 const { Updates } = require("./updates.cjs");
@@ -47,8 +47,9 @@ const { applyManagedResources } = require("./managed-resources.cjs");
 const { ModelCatalog } = require("./model-catalog.cjs");
 
 const originalProfile = app.getPath("userData");
-const customProfile = Boolean(process.env.JAROD_PI_DATA_DIR) || !["pi-desktop", "jarod-pi", APP_NAME].includes(path.basename(originalProfile).toLowerCase());
-const profileDirectory = process.env.JAROD_PI_DATA_DIR ? path.resolve(process.env.JAROD_PI_DATA_DIR) : customProfile ? originalProfile : path.join(app.getPath("appData"), brand.directoryName);
+const customProfile = Boolean(process.env.INSIGHT_DATA_DIR) || ![...brand.legacyDirectoryNames, "insight-desktop", brand.directoryName, APP_NAME].some((name) => name.toLowerCase() === path.basename(originalProfile).toLowerCase());
+const profileDirectory = process.env.INSIGHT_DATA_DIR ? path.resolve(process.env.INSIGHT_DATA_DIR) : customProfile ? originalProfile : path.join(app.getPath("appData"), brand.directoryName);
+const legacyProfile = legacyProfileDirectory(app.getPath("appData"), brand.legacyDirectoryNames);
 // Select the profile before Chromium creates a session or the instance lock.
 fs.mkdirSync(profileDirectory, { recursive: true });
 app.setPath("userData", profileDirectory);
@@ -181,7 +182,7 @@ const historyRequests = new Map();
 let historyWorker;
 let historyRequestId = 0;
 const pendingInputs = new Set();
-const agentPrefix = `[pi-desktop-${randomUUID()}]`;
+const agentPrefix = `[insight-${randomUUID()}]`;
 
 function selectedAgent() {
   const id = agentSelections[sessionFile];
@@ -374,7 +375,7 @@ function preserveEmptySession() {
 
 async function startPi() {
   if (starting) return starting;
-  const resourceVersion = process.env.JAROD_PI_COMPONENTS;
+  const resourceVersion = process.env.INSIGHT_COMPONENTS;
   if (rpc.child && (resourcesUsed === resourceVersion || task.active)) return;
   preserveEmptySession();
   recoverPendingQueue();
@@ -397,10 +398,10 @@ async function startPi() {
     const options = {
       cwd: settings.cwd,
       env: { ...createRuntimeEnvironment(process.env, { node, cli, agentDirectory, key: credentials.key, specialistDirectory: runtimePaths(projectRoot).directory }),
-        PI_DESKTOP_AGENT_PREFIX: agentPrefix, PYTHONUTF8: "1", DO_NOT_TRACK: "1",
-        PI_DESKTOP_PERMISSION_BRIDGE: permissionBridge.url, PI_DESKTOP_PERMISSION_TOKEN: permissionBridge.token,
-        PI_DESKTOP_IMAGE_BRIDGE: imageBridge.url, PI_DESKTOP_IMAGE_TOKEN: imageBridge.token,
-        PI_DESKTOP_VIDEO_BRIDGE: videoBridge.url, PI_DESKTOP_VIDEO_TOKEN: videoBridge.token },
+        INSIGHT_AGENT_PREFIX: agentPrefix, PYTHONUTF8: "1", DO_NOT_TRACK: "1",
+        INSIGHT_PERMISSION_BRIDGE: permissionBridge.url, INSIGHT_PERMISSION_TOKEN: permissionBridge.token,
+        INSIGHT_IMAGE_BRIDGE: imageBridge.url, INSIGHT_IMAGE_TOKEN: imageBridge.token,
+        INSIGHT_VIDEO_BRIDGE: videoBridge.url, INSIGHT_VIDEO_TOKEN: videoBridge.token },
     };
     let response;
     for (let attempt = 0; attempt < 2; attempt++) {
@@ -1260,7 +1261,7 @@ async function createWindow() {
 
 const ownsApp = app.requestSingleInstanceLock();
 if (!ownsApp) app.quit();
-if (ownsApp && !customProfile) prepareProfileEncryption(path.join(app.getPath("appData"), "pi-desktop"), profileDirectory);
+if (ownsApp && !customProfile && legacyProfile) prepareProfileEncryption(legacyProfile, profileDirectory);
 app.on("second-instance", () => {
   const host = hosts.values().next().value;
   if (host?.active) host.active.activate();
@@ -1272,25 +1273,25 @@ app.whenReady().then(async () => {
   if (process.platform === "darwin") app.dock?.setIcon(path.join(__dirname, "icons/xueshupai.png"));
   const initialHost = createHost();
   await initialHost.window.loadFile(path.join(__dirname, "startup.html"));
-  if (!customProfile) await migrateProfile(path.join(app.getPath("appData"), "pi-desktop"), profileDirectory);
+  if (!customProfile && legacyProfile) await migrateProfile(legacyProfile, profileDirectory);
   await fs.promises.mkdir(profileDirectory, { recursive: true });
   const directory = profileDirectory;
   await fs.promises.mkdir(defaultWorkspace, { recursive: true });
   const portable = releaseConfig.distribution === "portable";
-  if (portable) process.env.JAROD_PI_ON_DEMAND = "1";
+  if (portable) process.env.INSIGHT_ON_DEMAND = "1";
   const ComponentService = portable ? OnDemandComponents : Components;
   components = new ComponentService(path.join(directory, portable ? "portable-components" : "components"), {
     url: releaseConfig.componentsUrl, publicKey: releaseConfig.componentsPublicKey, fetcher: desktopResourceFetch,
     bundle: path.join(projectRoot, "bundled-components"), onChange: () => broadcast("app:distribution-changed"),
     onActivate: (paths) => {
       applyManagedResources(agentDirectory, paths, runtime.node);
-      process.env.JAROD_PI_COMPONENTS = JSON.stringify(paths);
+      process.env.INSIGHT_COMPONENTS = JSON.stringify(paths);
       cachedSpecialists = null;
       broadcast("app:agents-changed");
     },
   });
-  process.env.JAROD_PI_COMPONENTS = JSON.stringify(components.paths());
-  process.env.JAROD_PI_PRODUCT_ROOT = projectRoot;
+  process.env.INSIGHT_COMPONENTS = JSON.stringify(components.paths());
+  process.env.INSIGHT_PRODUCT_ROOT = projectRoot;
   updates = new Updates(autoUpdater, { url: portable ? "" : releaseConfig.updateUrl, packaged: app.isPackaged, version: app.getVersion(), busy: () => accountChanging || sessionOperations.size || [...conversations.values()].some((item) => item.task.active || item.busy()), onChange: () => broadcast("app:distribution-changed") });
   if (portable) updates = new PortableUpdates(path.join(directory, "portable-updates"), { url: releaseConfig.updateUrl, publicKey: releaseConfig.componentsPublicKey, fetcher: desktopResourceFetch, version: app.getVersion(), reveal: (file) => shell.showItemInFolder(file), onChange: () => broadcast("app:distribution-changed") });
   agentSelectionsFile = path.join(directory, "desktop-specialists.json");
